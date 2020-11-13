@@ -1,0 +1,12 @@
+[NewUser]
+SmtpHostName = "127.0.0.1"
+SmtpHostPort = "587"
+SmtpUser = "user"
+SmtpPassword = "password"
+SmtpFromAddress = "users@example.com"
+
+[PasswordChange]
+LdapServer = "127.0.0.1"
+BaseDN = "ou=users,dc=example,dc=com"
+KubernetesNamespace = "default"
+KubernetesConfigmap = "glauth-configmap"
