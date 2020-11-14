@@ -18,14 +18,14 @@ jobs:
       - name: Login to GitHub Packages Docker Registry
         uses: docker/login-action@v1
         with:
-          registry: https://docker.pkg.github.com
-          username: ${{ github.actor }}
-          password: ${{ github.token }}
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GHCR_TOKEN }}
       - name: Docker meta
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: docker.pkg.github.com/nwillems/glauth-tools/glauth-tools # list of Docker images to use as base name for tags
+          images: ghcr.io/nwillems/glauth-tools # list of Docker images to use as base name for tags
           tag-sha: true # add git short SHA as Docker tag
       - name: Build and push
         id: docker_build
