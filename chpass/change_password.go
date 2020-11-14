@@ -43,9 +43,9 @@ func ChangePassword(username, oldPassword, newPassword string, config Config) er
 	glauthConfig, err := ParseGLAuthConfig(data["config.cfg"])
 	// Exchange password for new hashed
 	hashedNewPassword := HashPassword(&newPassword)
-	for _, user := range glauthConfig.Users {
+	for idx, user := range glauthConfig.Users {
 		if user.Name == username {
-			user.PassSHA256 = *hashedNewPassword
+			glauthConfig.Users[idx].PassSHA256 = *hashedNewPassword
 		}
 	}
 	// Deserialize config

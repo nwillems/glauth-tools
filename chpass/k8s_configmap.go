@@ -3,6 +3,7 @@ package chpass
 import (
 	"context"
 	"fmt"
+	"log"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
@@ -48,16 +49,20 @@ func UpdateConfigMap(configmapName, namespace string, data map[string]string) er
 	api := clientset.CoreV1()
 	configMapClient := api.ConfigMaps(namespace)
 
+	log.Println("Updating configmap - config, clientset and apiclient created")
+
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
 		// Retrieve the latest version of Deployment before attempting update
 		// RetryOnConflict uses exponential backoff to avoid exhausting the apiserver
+		log.Println("Updating configmap - in retryOnConflict")
 		result, getErr := configMapClient.Get(context.TODO(), configmapName, metav1.GetOptions{})
 		if getErr != nil {
-			panic(fmt.Errorf("Failed to get latest version of ConfigMap: %v", getErr))
+			return fmt.Errorf("Failed to get latest version of ConfigMap: %v", getErr)
 		}
 
 		result.Data = data
 		_, updateErr := configMapClient.Update(context.TODO(), result, metav1.UpdateOptions{})
+		log.Printf("Updated configmap - %v", updateErr)
 		return updateErr
 	})
 	if retryErr != nil {
