@@ -10,7 +10,7 @@ func TestSendEmail(t *testing.T) {
 	config := mails.Mailconfig{
 		SmtpFromAddress:    "you@example.com",
 		SmtpHostName:       "127.0.0.1",
-		SmtpHostPort:       9025,
+		SmtpHostPort:       "9025",
 		SmtpPassword:       "herp",
 		SmtpUser:           "snerp",
 		StartTLS:           false,
